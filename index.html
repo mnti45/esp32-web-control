@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Dải Ngân Hà Của Chúng Mình</title>
+  <style>
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html,body{margin:0;width:100%;min-height:100%;font-family:Georgia,"Times New Roman",serif;background:#030417;color:white;overflow-x:hidden}
+    body{
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,87,189,.35), transparent 25%),
+        radial-gradient(circle at 80% 30%, rgba(76,184,255,.28), transparent 28%),
+        radial-gradient(circle at 50% 80%, rgba(172,93,255,.32), transparent 35%),
+        linear-gradient(180deg,#030417,#080022 45%,#18072e);
+    }
+    canvas{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+    .page{position:relative;z-index:2;min-height:100vh;padding:24px 16px 36px;display:flex;align-items:center;justify-content:center}
+    .phone{
+      width:min(430px,100%);
+      min-height:94vh;
+      border-radius:34px;
+      padding:24px 16px 22px;
+      background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.025));
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow:0 0 80px rgba(255,105,210,.16), inset 0 0 40px rgba(255,255,255,.05);
+      backdrop-filter:blur(6px);
+      text-align:center;
+      overflow:hidden;
+      position:relative;
+    }
+    .title{
+      margin:8px 0 8px;
+      font-size:36px;
+      line-height:1.05;
+      font-weight:400;
+      font-style:italic;
+      color:#ffe5f6;
+      text-shadow:0 0 10px #ff8bd8,0 0 30px rgba(255,80,190,.75),0 0 55px rgba(130,200,255,.45);
+    }
+    .subtitle{
+      margin:16px auto 22px;
+      max-width:330px;
+      font-size:20px;
+      line-height:1.3;
+      color:#eef4ff;
+      text-shadow:0 0 14px rgba(140,200,255,.8);
+    }
+    .heart-wrap{
+      position:relative;
+      width:min(90vw,370px);
+      height:min(90vw,370px);
+      margin:8px auto 24px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .heart-glow{
+      position:absolute;
+      inset:0;
+      filter:drop-shadow(0 0 14px #ff8edb) drop-shadow(0 0 30px rgba(255,130,215,.55));
+      animation:pulse 2.8s ease-in-out infinite;
+    }
+    .heart-glow svg{width:100%;height:100%;overflow:visible}
+    .heart-glow path{fill:none;stroke:#ffd1f0;stroke-width:2.2;stroke-linecap:round;stroke-dasharray:12 8}
+    @keyframes pulse{50%{transform:scale(1.025);filter:drop-shadow(0 0 22px #fff) drop-shadow(0 0 45px rgba(255,80,190,.8))}}
+    .photo{
+      width:76%;
+      height:76%;
+      border-radius:36px;
+      overflow:hidden;
+      box-shadow:0 0 25px rgba(255,255,255,.35),0 0 75px rgba(255,88,202,.42);
+      border:2px solid rgba(255,234,250,.85);
+      background:#111;
+      position:relative;
+    }
+    .photo img{width:100%;height:100%;object-fit:cover;object-position:center}
+    .photo:after{
+      content:"";
+      position:absolute;inset:0;
+      background:radial-gradient(circle at 50% 40%,transparent 45%,rgba(20,0,40,.1) 70%,rgba(20,0,40,.45));
+      pointer-events:none;
+    }
+    .button{
+      display:inline-block;
+      min-width:230px;
+      padding:16px 24px;
+      border-radius:999px;
+      background:linear-gradient(90deg,rgba(255,112,207,.55),rgba(255,182,230,.78),rgba(181,103,255,.5));
+      border:1px solid rgba(255,235,252,.9);
+      box-shadow:0 0 18px rgba(255,150,224,.9), inset 0 0 24px rgba(255,255,255,.18);
+      color:white;
+      font-size:30px;
+      text-decoration:none;
+      text-shadow:0 0 12px rgba(255,255,255,.85);
+    }
+    .message{
+      margin:18px auto 4px;
+      max-width:360px;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      font-size:15px;
+      line-height:1.55;
+      color:rgba(255,255,255,.84);
+    }
+    .constellation{
+      position:absolute;
+      width:130px;height:95px;
+      opacity:.9;
+      filter:drop-shadow(0 0 7px #fff);
+    }
+    .c1{left:-10px;bottom:120px;transform:rotate(-15deg)}
+    .c2{right:-22px;top:265px;transform:rotate(18deg) scale(.85)}
+    .constellation line{stroke:white;stroke-width:1;opacity:.82}
+    .constellation circle{fill:white}
+    .shoot{position:fixed;width:150px;height:2px;background:linear-gradient(90deg,transparent,#fff);z-index:1;animation:shoot 4s linear infinite;opacity:0}
+    .s1{top:15%;left:-30%;animation-delay:.8s}.s2{top:62%;left:-45%;animation-delay:2.6s}
+    @keyframes shoot{0%{opacity:0;transform:translate(0,0) rotate(-26deg)}10%{opacity:1}35%,100%{opacity:0;transform:translate(140vw,50vh) rotate(-26deg)}}
+    @media(max-height:740px){.title{font-size:30px}.subtitle{font-size:17px}.heart-wrap{width:285px;height:285px}.button{font-size:25px;padding:13px 22px}.phone{border-radius:0;min-height:100vh}}
+  </style>
+</head>
+<body>
+  <canvas id="stars"></canvas>
+  <div class="shoot s1"></div><div class="shoot s2"></div>
+  <main class="page">
+    <section class="phone">
+      <h1 class="title">Dải Ngân Hà<br>Của Chúng Mình</h1>
+      <div class="subtitle">Giữa hàng triệu vì sao,<br>anh vẫn chỉ nhìn thấy em.</div>
+
+      <div class="heart-wrap">
+        <div class="heart-glow">
+          <svg viewBox="0 0 360 330">
+            <path d="M180 305 C50 210 18 125 63 72 C101 27 159 51 180 94 C201 51 259 27 297 72 C342 125 310 210 180 305 Z"/>
+          </svg>
+        </div>
+        <div class="photo"><img src="couple.jpg" alt="Ảnh của chúng mình"></div>
+      </div>
+
+      <a class="button" href="#love">✦ ♡ Bắt đầu ♡ ✦</a>
+      <p class="message" id="love">
+        Anh không cần cả bầu trời, chỉ cần mỗi lần ngước nhìn lên, người anh nhớ đến vẫn là em. 💖
+      </p>
+
+      <svg class="constellation c1" viewBox="0 0 130 95">
+        <line x1="10" y1="70" x2="38" y2="35"/><line x1="38" y1="35" x2="72" y2="54"/><line x1="72" y1="54" x2="110" y2="18"/><line x1="72" y1="54" x2="98" y2="82"/>
+        <circle cx="10" cy="70" r="3"/><circle cx="38" cy="35" r="3"/><circle cx="72" cy="54" r="3"/><circle cx="110" cy="18" r="3"/><circle cx="98" cy="82" r="3"/>
+      </svg>
+      <svg class="constellation c2" viewBox="0 0 130 95">
+        <line x1="15" y1="20" x2="50" y2="36"/><line x1="50" y1="36" x2="85" y2="20"/><line x1="50" y1="36" x2="72" y2="75"/><line x1="72" y1="75" x2="112" y2="64"/>
+        <circle cx="15" cy="20" r="3"/><circle cx="50" cy="36" r="3"/><circle cx="85" cy="20" r="3"/><circle cx="72" cy="75" r="3"/><circle cx="112" cy="64" r="3"/>
+      </svg>
+    </section>
+  </main>
+
+<script>
+const canvas=document.getElementById('stars'),ctx=canvas.getContext('2d');let W,H,stars=[];
+function resize(){W=canvas.width=innerWidth*devicePixelRatio;H=canvas.height=innerHeight*devicePixelRatio;stars=Array.from({length:Math.floor(innerWidth*innerHeight/900)},()=>({x:Math.random()*W,y:Math.random()*H,r:(Math.random()*1.7+.35)*devicePixelRatio,a:Math.random(),p:Math.random()*6.28,v:(Math.random()*.18+.03)*devicePixelRatio}))}
+function draw(){ctx.clearRect(0,0,W,H);ctx.fillStyle='rgba(3,4,23,.45)';ctx.fillRect(0,0,W,H);stars.forEach(s=>{s.p+=.025;s.y+=s.v;if(s.y>H)s.y=0;let a=.35+Math.sin(s.p)*.35+s.a*.25;ctx.beginPath();ctx.fillStyle=`rgba(255,255,255,${a})`;ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();if(a>.8){ctx.beginPath();ctx.strokeStyle='rgba(255,210,245,.25)';ctx.moveTo(s.x-s.r*3,s.y);ctx.lineTo(s.x+s.r*3,s.y);ctx.moveTo(s.x,s.y-s.r*3);ctx.lineTo(s.x,s.y+s.r*3);ctx.stroke()}});requestAnimationFrame(draw)}
+addEventListener('resize',resize);resize();draw();
+document.querySelector('.button').addEventListener('click',e=>{e.preventDefault();for(let i=0;i<20;i++){let h=document.createElement('div');h.textContent=['✨','💖','🌙','⭐'][Math.floor(Math.random()*4)];h.style.cssText=`position:fixed;left:${Math.random()*100}vw;top:${60+Math.random()*25}vh;z-index:9;font-size:${18+Math.random()*18}px;pointer-events:none;animation:rise 2.3s ease-out forwards;text-shadow:0 0 12px white`;document.body.appendChild(h);setTimeout(()=>h.remove(),2400)}})
+const st=document.createElement('style');st.textContent='@keyframes rise{0%{opacity:0;transform:translateY(20px) scale(.7)}15%{opacity:1}100%{opacity:0;transform:translateY(-140px) scale(1.7)}}';document.head.appendChild(st);
+</script>
+</body>
+</html>
