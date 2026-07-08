@@ -1,0 +1,13 @@
+HUONG DAN KHONG CAN HOSTING
+
+1. Giai nen file ZIP nay ra may tinh.
+2. Bam dup vao file: BAT_DAU_MO_WEB_VA_TAO_QR.bat
+3. Neu Windows Firewall hoi, bam Allow / Cho phep.
+4. May tinh se tao file: QR_QUET_DE_VAO_WEB.png
+5. Dien thoai ket noi cung Wi-Fi voi may tinh.
+6. Quet ma QR do de vao web.
+
+Luu y:
+- Cach nay KHONG can upload hosting.
+- Nhung chi dung duoc khi may tinh dang bat va dien thoai o cung mang Wi-Fi.
+- Neu gui QR cho ban gai o xa, QR se khong mo duoc. Muon mo o xa bat buoc can hosting hoac public tunnel.
