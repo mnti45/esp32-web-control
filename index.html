@@ -4,160 +4,725 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Dải Ngân Hà Của Chúng Mình</title>
+
   <style>
-    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-    html,body{margin:0;width:100%;min-height:100%;font-family:Georgia,"Times New Roman",serif;background:#030417;color:white;overflow-x:hidden}
-    body{
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #02020d;
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      touch-action: none;
+    }
+
+    #space3d {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      display: block;
+      z-index: 1;
+      background: radial-gradient(circle at center, #11123d 0%, #050516 45%, #010108 100%);
+    }
+
+    .top-text {
+      position: fixed;
+      z-index: 5;
+      top: 22px;
+      left: 14px;
+      right: 14px;
+      text-align: center;
+      pointer-events: none;
+      transition: opacity .5s ease, transform .5s ease;
+    }
+
+    .top-text.hide {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+
+    .title {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-style: italic;
+      font-size: clamp(30px, 9vw, 50px);
+      line-height: 1.05;
+      font-weight: 400;
+      color: #ffe4f8;
+      text-shadow:
+        0 0 8px #fff,
+        0 0 22px #ff62ce,
+        0 0 48px rgba(126, 197, 255, .8);
+    }
+
+    .subtitle {
+      margin: 12px auto 0;
+      max-width: 360px;
+      font-size: clamp(15px, 4vw, 20px);
+      line-height: 1.45;
+      color: rgba(255,255,255,.86);
+      text-shadow: 0 0 16px rgba(160,210,255,.75);
+    }
+
+    .hint {
+      position: fixed;
+      left: 14px;
+      right: 14px;
+      bottom: 18px;
+      z-index: 5;
+      padding: 12px 14px;
+      text-align: center;
+      font-size: 13px;
+      color: rgba(255,255,255,.78);
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 22px rgba(255,100,210,.18);
+      transition: opacity .5s ease;
+    }
+
+    .hint.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .photo-orbit {
+      position: fixed;
+      z-index: 4;
+      left: 50%;
+      top: 50%;
+      width: min(64vw, 300px);
+      height: min(64vw, 300px);
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: .98;
+      transition: transform .45s ease, opacity .45s ease;
+      filter: drop-shadow(0 0 26px rgba(255,120,215,.55));
+    }
+
+    .photo-orbit.zoomed {
+      transform: translate(-50%, -50%) scale(.76);
+      opacity: .72;
+    }
+
+    .photo-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,220,250,.85);
+      box-shadow:
+        0 0 18px rgba(255,255,255,.5),
+        0 0 45px rgba(255,88,202,.55),
+        inset 0 0 32px rgba(255,255,255,.10);
+      animation: ringRotate 12s linear infinite;
+    }
+
+    .photo-ring::before,
+    .photo-ring::after {
+      content: "";
+      position: absolute;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 0 18px 7px rgba(255,255,255,.7);
+    }
+
+    .photo-ring::before {
+      left: 26px;
+      top: 54px;
+    }
+
+    .photo-ring::after {
+      right: 38px;
+      bottom: 42px;
+      background: #ff8edb;
+    }
+
+    @keyframes ringRotate {
+      to { transform: rotate(360deg); }
+    }
+
+    .couple-photo {
+      position: absolute;
+      inset: 14%;
+      border-radius: 32px;
+      overflow: hidden;
+      border: 2px solid rgba(255,237,252,.9);
+      background: #111;
+      box-shadow:
+        0 0 25px rgba(255,255,255,.35),
+        0 0 70px rgba(255,92,205,.45);
+      animation: photoFloat 4.2s ease-in-out infinite;
+    }
+
+    @keyframes photoFloat {
+      0%,100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-8px) scale(1.025); }
+    }
+
+    .couple-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    .love-popup {
+      position: fixed;
+      z-index: 10;
+      left: 50%;
+      top: 50%;
+      width: min(90vw, 390px);
+      min-height: 260px;
+      padding: 26px 22px;
+      transform: translate(-50%, -50%) scale(.7) rotateX(18deg);
+      opacity: 0;
+      pointer-events: none;
+      border-radius: 32px;
+      text-align: center;
       background:
-        radial-gradient(circle at 20% 20%, rgba(255,87,189,.35), transparent 25%),
-        radial-gradient(circle at 80% 30%, rgba(76,184,255,.28), transparent 28%),
-        radial-gradient(circle at 50% 80%, rgba(172,93,255,.32), transparent 35%),
-        linear-gradient(180deg,#030417,#080022 45%,#18072e);
+        radial-gradient(circle at 50% 18%, rgba(255,255,255,.20), transparent 30%),
+        linear-gradient(145deg, rgba(255,80,190,.24), rgba(94,120,255,.20), rgba(255,255,255,.08));
+      border: 1px solid rgba(255,235,252,.55);
+      box-shadow:
+        0 0 35px rgba(255,110,215,.55),
+        inset 0 0 40px rgba(255,255,255,.09);
+      backdrop-filter: blur(12px);
+      transition: opacity .55s ease, transform .55s cubic-bezier(.2,1.2,.25,1);
     }
-    canvas{position:fixed;inset:0;width:100%;height:100%;z-index:0}
-    .page{position:relative;z-index:2;min-height:100vh;padding:24px 16px 36px;display:flex;align-items:center;justify-content:center}
-    .phone{
-      width:min(430px,100%);
-      min-height:94vh;
-      border-radius:34px;
-      padding:24px 16px 22px;
-      background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.025));
-      border:1px solid rgba(255,255,255,.16);
-      box-shadow:0 0 80px rgba(255,105,210,.16), inset 0 0 40px rgba(255,255,255,.05);
-      backdrop-filter:blur(6px);
-      text-align:center;
-      overflow:hidden;
-      position:relative;
+
+    .love-popup.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1) rotateX(0deg);
+      pointer-events: auto;
     }
-    .title{
-      margin:8px 0 8px;
-      font-size:36px;
-      line-height:1.05;
-      font-weight:400;
-      font-style:italic;
-      color:#ffe5f6;
-      text-shadow:0 0 10px #ff8bd8,0 0 30px rgba(255,80,190,.75),0 0 55px rgba(130,200,255,.45);
+
+    .big-heart {
+      font-size: 70px;
+      line-height: 1;
+      filter: drop-shadow(0 0 24px rgba(255,40,80,.95));
+      animation: heartBeat 1.25s ease-in-out infinite;
     }
-    .subtitle{
-      margin:16px auto 22px;
-      max-width:330px;
-      font-size:20px;
-      line-height:1.3;
-      color:#eef4ff;
-      text-shadow:0 0 14px rgba(140,200,255,.8);
+
+    @keyframes heartBeat {
+      0%,100% { transform: scale(1); }
+      30% { transform: scale(1.18); }
+      50% { transform: scale(.98); }
+      70% { transform: scale(1.12); }
     }
-    .heart-wrap{
-      position:relative;
-      width:min(90vw,370px);
-      height:min(90vw,370px);
-      margin:8px auto 24px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+
+    .love-popup h2 {
+      margin: 10px 0 8px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 35px;
+      font-weight: 400;
+      color: #fff0fb;
+      text-shadow:
+        0 0 10px white,
+        0 0 25px #ff58c9;
+      animation: text3d 2.8s ease-in-out infinite;
     }
-    .heart-glow{
-      position:absolute;
-      inset:0;
-      filter:drop-shadow(0 0 14px #ff8edb) drop-shadow(0 0 30px rgba(255,130,215,.55));
-      animation:pulse 2.8s ease-in-out infinite;
+
+    @keyframes text3d {
+      0%,100% {
+        transform: perspective(450px) rotateY(-7deg) translateZ(0);
+        text-shadow: 0 0 10px #fff, 0 0 24px #ff58c9, 3px 3px 0 rgba(255,40,145,.28);
+      }
+      50% {
+        transform: perspective(450px) rotateY(7deg) translateZ(22px);
+        text-shadow: 0 0 14px #fff, 0 0 36px #7dd3ff, -3px 3px 0 rgba(120,160,255,.28);
+      }
     }
-    .heart-glow svg{width:100%;height:100%;overflow:visible}
-    .heart-glow path{fill:none;stroke:#ffd1f0;stroke-width:2.2;stroke-linecap:round;stroke-dasharray:12 8}
-    @keyframes pulse{50%{transform:scale(1.025);filter:drop-shadow(0 0 22px #fff) drop-shadow(0 0 45px rgba(255,80,190,.8))}}
-    .photo{
-      width:76%;
-      height:76%;
-      border-radius:36px;
-      overflow:hidden;
-      box-shadow:0 0 25px rgba(255,255,255,.35),0 0 75px rgba(255,88,202,.42);
-      border:2px solid rgba(255,234,250,.85);
-      background:#111;
-      position:relative;
+
+    .love-popup p {
+      margin: 12px auto 0;
+      max-width: 330px;
+      color: rgba(255,255,255,.88);
+      font-size: 16px;
+      line-height: 1.55;
     }
-    .photo img{width:100%;height:100%;object-fit:cover;object-position:center}
-    .photo:after{
-      content:"";
-      position:absolute;inset:0;
-      background:radial-gradient(circle at 50% 40%,transparent 45%,rgba(20,0,40,.1) 70%,rgba(20,0,40,.45));
-      pointer-events:none;
+
+    .close-btn {
+      margin-top: 18px;
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 20px;
+      color: white;
+      font-weight: 800;
+      background: linear-gradient(90deg, #ff5fc8, #8b5cff);
+      box-shadow: 0 0 18px rgba(255,90,210,.6);
     }
-    .button{
-      display:inline-block;
-      min-width:230px;
-      padding:16px 24px;
-      border-radius:999px;
-      background:linear-gradient(90deg,rgba(255,112,207,.55),rgba(255,182,230,.78),rgba(181,103,255,.5));
-      border:1px solid rgba(255,235,252,.9);
-      box-shadow:0 0 18px rgba(255,150,224,.9), inset 0 0 24px rgba(255,255,255,.18);
-      color:white;
-      font-size:30px;
-      text-decoration:none;
-      text-shadow:0 0 12px rgba(255,255,255,.85);
+
+    .flying-heart {
+      position: fixed;
+      z-index: 11;
+      pointer-events: none;
+      font-size: 22px;
+      animation: flyHeart 2.7s ease-out forwards;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,.9));
     }
-    .message{
-      margin:18px auto 4px;
-      max-width:360px;
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-      font-size:15px;
-      line-height:1.55;
-      color:rgba(255,255,255,.84);
+
+    @keyframes flyHeart {
+      0% {
+        opacity: 0;
+        transform: translate3d(0, 20px, 0) scale(.5) rotate(0deg);
+      }
+      12% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform: translate3d(var(--dx), var(--dy), 0) scale(1.8) rotate(var(--rot));
+      }
     }
-    .constellation{
-      position:absolute;
-      width:130px;height:95px;
-      opacity:.9;
-      filter:drop-shadow(0 0 7px #fff);
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #02020d;
+      color: white;
+      transition: opacity .6s ease;
     }
-    .c1{left:-10px;bottom:120px;transform:rotate(-15deg)}
-    .c2{right:-22px;top:265px;transform:rotate(18deg) scale(.85)}
-    .constellation line{stroke:white;stroke-width:1;opacity:.82}
-    .constellation circle{fill:white}
-    .shoot{position:fixed;width:150px;height:2px;background:linear-gradient(90deg,transparent,#fff);z-index:1;animation:shoot 4s linear infinite;opacity:0}
-    .s1{top:15%;left:-30%;animation-delay:.8s}.s2{top:62%;left:-45%;animation-delay:2.6s}
-    @keyframes shoot{0%{opacity:0;transform:translate(0,0) rotate(-26deg)}10%{opacity:1}35%,100%{opacity:0;transform:translate(140vw,50vh) rotate(-26deg)}}
-    @media(max-height:740px){.title{font-size:30px}.subtitle{font-size:17px}.heart-wrap{width:285px;height:285px}.button{font-size:25px;padding:13px 22px}.phone{border-radius:0;min-height:100vh}}
+
+    .loader.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loader span {
+      padding: 14px 22px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.16);
+      box-shadow: 0 0 30px rgba(255,80,190,.35);
+    }
   </style>
 </head>
 <body>
-  <canvas id="stars"></canvas>
-  <div class="shoot s1"></div><div class="shoot s2"></div>
-  <main class="page">
-    <section class="phone">
-      <h1 class="title">Dải Ngân Hà<br>Của Chúng Mình</h1>
-      <div class="subtitle">Giữa hàng triệu vì sao,<br>anh vẫn chỉ nhìn thấy em.</div>
+  <div class="loader" id="loader"><span>Đang mở dải ngân hà...</span></div>
 
-      <div class="heart-wrap">
-        <div class="heart-glow">
-          <svg viewBox="0 0 360 330">
-            <path d="M180 305 C50 210 18 125 63 72 C101 27 159 51 180 94 C201 51 259 27 297 72 C342 125 310 210 180 305 Z"/>
-          </svg>
-        </div>
-        <div class="photo"><img src="couple.jpg" alt="Ảnh của chúng mình"></div>
-      </div>
+  <canvas id="space3d"></canvas>
 
-      <a class="button" href="#love">✦ ♡ Bắt đầu ♡ ✦</a>
-      <p class="message" id="love">
-        Anh không cần cả bầu trời, chỉ cần mỗi lần ngước nhìn lên, người anh nhớ đến vẫn là em. 💖
-      </p>
+  <div class="top-text" id="topText">
+    <h1 class="title">Dải Ngân Hà<br>Của Chúng Mình</h1>
+    <div class="subtitle">Chạm kéo để xoay 360°. Vuốt 2 ngón để zoom vào thiên hà tình yêu.</div>
+  </div>
 
-      <svg class="constellation c1" viewBox="0 0 130 95">
-        <line x1="10" y1="70" x2="38" y2="35"/><line x1="38" y1="35" x2="72" y2="54"/><line x1="72" y1="54" x2="110" y2="18"/><line x1="72" y1="54" x2="98" y2="82"/>
-        <circle cx="10" cy="70" r="3"/><circle cx="38" cy="35" r="3"/><circle cx="72" cy="54" r="3"/><circle cx="110" cy="18" r="3"/><circle cx="98" cy="82" r="3"/>
-      </svg>
-      <svg class="constellation c2" viewBox="0 0 130 95">
-        <line x1="15" y1="20" x2="50" y2="36"/><line x1="50" y1="36" x2="85" y2="20"/><line x1="50" y1="36" x2="72" y2="75"/><line x1="72" y1="75" x2="112" y2="64"/>
-        <circle cx="15" cy="20" r="3"/><circle cx="50" cy="36" r="3"/><circle cx="85" cy="20" r="3"/><circle cx="72" cy="75" r="3"/><circle cx="112" cy="64" r="3"/>
-      </svg>
-    </section>
-  </main>
+  <div class="photo-orbit" id="photoOrbit">
+    <div class="photo-ring"></div>
+    <div class="couple-photo">
+      <img src="couple.jpg" alt="Ảnh của chúng mình">
+    </div>
+  </div>
 
-<script>
-const canvas=document.getElementById('stars'),ctx=canvas.getContext('2d');let W,H,stars=[];
-function resize(){W=canvas.width=innerWidth*devicePixelRatio;H=canvas.height=innerHeight*devicePixelRatio;stars=Array.from({length:Math.floor(innerWidth*innerHeight/900)},()=>({x:Math.random()*W,y:Math.random()*H,r:(Math.random()*1.7+.35)*devicePixelRatio,a:Math.random(),p:Math.random()*6.28,v:(Math.random()*.18+.03)*devicePixelRatio}))}
-function draw(){ctx.clearRect(0,0,W,H);ctx.fillStyle='rgba(3,4,23,.45)';ctx.fillRect(0,0,W,H);stars.forEach(s=>{s.p+=.025;s.y+=s.v;if(s.y>H)s.y=0;let a=.35+Math.sin(s.p)*.35+s.a*.25;ctx.beginPath();ctx.fillStyle=`rgba(255,255,255,${a})`;ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();if(a>.8){ctx.beginPath();ctx.strokeStyle='rgba(255,210,245,.25)';ctx.moveTo(s.x-s.r*3,s.y);ctx.lineTo(s.x+s.r*3,s.y);ctx.moveTo(s.x,s.y-s.r*3);ctx.lineTo(s.x,s.y+s.r*3);ctx.stroke()}});requestAnimationFrame(draw)}
-addEventListener('resize',resize);resize();draw();
-document.querySelector('.button').addEventListener('click',e=>{e.preventDefault();for(let i=0;i<20;i++){let h=document.createElement('div');h.textContent=['✨','💖','🌙','⭐'][Math.floor(Math.random()*4)];h.style.cssText=`position:fixed;left:${Math.random()*100}vw;top:${60+Math.random()*25}vh;z-index:9;font-size:${18+Math.random()*18}px;pointer-events:none;animation:rise 2.3s ease-out forwards;text-shadow:0 0 12px white`;document.body.appendChild(h);setTimeout(()=>h.remove(),2400)}})
-const st=document.createElement('style');st.textContent='@keyframes rise{0%{opacity:0;transform:translateY(20px) scale(.7)}15%{opacity:1}100%{opacity:0;transform:translateY(-140px) scale(1.7)}}';document.head.appendChild(st);
-</script>
+  <div class="hint" id="hint">Nhấn đúp vào màn hình để hiện trái tim 3D và lời yêu thương 💖</div>
+
+  <div class="love-popup" id="lovePopup">
+    <div class="big-heart">❤️</div>
+    <h2>Anh yêu em</h2>
+    <p id="loveText">Giữa hàng triệu vì sao, anh vẫn chỉ chọn nhìn về phía em.</p>
+    <button class="close-btn" id="closeBtn">Tiếp tục ngắm sao</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("space3d");
+    const ctx = canvas.getContext("2d");
+    const loader = document.getElementById("loader");
+    const popup = document.getElementById("lovePopup");
+    const loveText = document.getElementById("loveText");
+    const closeBtn = document.getElementById("closeBtn");
+    const photoOrbit = document.getElementById("photoOrbit");
+    const topText = document.getElementById("topText");
+    const hint = document.getElementById("hint");
+
+    let W = 0, H = 0, CX = 0, CY = 0;
+    let stars = [];
+    let dust = [];
+    let angleX = -0.35;
+    let angleY = 0.0;
+    let autoRotate = true;
+    let zoom = 1.05;
+    let targetZoom = 1.05;
+    let dragging = false;
+    let lastX = 0, lastY = 0;
+    let lastTap = 0;
+    let lastPinch = 0;
+
+    const loveMessages = [
+      "Giữa hàng triệu vì sao, anh vẫn chỉ chọn nhìn về phía em.",
+      "Em là ngôi sao dịu dàng nhất trong dải ngân hà của anh.",
+      "Mỗi lần nhớ em, cả vũ trụ trong anh lại sáng lên.",
+      "Anh không cần đi hết thiên hà, vì thế giới đẹp nhất của anh là em.",
+      "Dù sao trời có xoay bao nhiêu vòng, tim anh vẫn quay về phía em.",
+      "Anh yêu em, nhiều như những vì sao đang bay quanh chúng mình."
+    ];
+    let msgIndex = 0;
+
+    function resize() {
+      W = canvas.width = window.innerWidth * devicePixelRatio;
+      H = canvas.height = window.innerHeight * devicePixelRatio;
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
+      CX = W / 2;
+      CY = H / 2;
+      createGalaxy();
+    }
+
+    function createGalaxy() {
+      stars = [];
+      dust = [];
+
+      const count = Math.floor(Math.min(5200, Math.max(3000, window.innerWidth * window.innerHeight / 115)));
+
+      for (let i = 0; i < count; i++) {
+        const arm = i % 4;
+        const radius = Math.pow(Math.random(), 0.62) * 900 + 10;
+        const swirl = radius * 0.012;
+        const theta = arm * Math.PI / 2 + swirl + (Math.random() - .5) * 0.75;
+        const spread = 24 + radius * .045;
+
+        const x = Math.cos(theta) * radius + (Math.random() - .5) * spread;
+        const z = Math.sin(theta) * radius + (Math.random() - .5) * spread;
+        const y = (Math.random() - .5) * (28 + radius * .018);
+
+        const temp = Math.random();
+        let color;
+        if (temp < .45) color = [255, 235, 255];
+        else if (temp < .68) color = [130, 205, 255];
+        else if (temp < .86) color = [255, 125, 215];
+        else color = [255, 220, 120];
+
+        stars.push({
+          x, y, z,
+          r: Math.random() * 1.25 + .35,
+          color,
+          tw: Math.random() * 6.28,
+          speed: Math.random() * .018 + .006
+        });
+      }
+
+      for (let i = 0; i < 480; i++) {
+        const radius = Math.random() * 880 + 35;
+        const theta = Math.random() * Math.PI * 2;
+        dust.push({
+          x: Math.cos(theta) * radius,
+          y: (Math.random() - .5) * 90,
+          z: Math.sin(theta) * radius,
+          r: Math.random() * 34 + 20,
+          a: Math.random() * .06 + .025,
+          color: Math.random() > .5 ? [255, 80, 195] : [80, 175, 255]
+        });
+      }
+    }
+
+    function rotatePoint(p) {
+      const cosY = Math.cos(angleY);
+      const sinY = Math.sin(angleY);
+      const cosX = Math.cos(angleX);
+      const sinX = Math.sin(angleX);
+
+      let x = p.x * cosY - p.z * sinY;
+      let z = p.x * sinY + p.z * cosY;
+      let y = p.y;
+
+      let y2 = y * cosX - z * sinX;
+      let z2 = y * sinX + z * cosX;
+
+      return { x, y: y2, z: z2 };
+    }
+
+    function project(p) {
+      const depth = 1450;
+      const scale = (depth / (depth + p.z)) * zoom * devicePixelRatio;
+      return {
+        x: CX + p.x * scale,
+        y: CY + p.y * scale,
+        s: scale,
+        z: p.z
+      };
+    }
+
+    function drawBackground() {
+      const g = ctx.createRadialGradient(CX, CY, 0, CX, CY, Math.max(W, H) * .7);
+      g.addColorStop(0, "#18134a");
+      g.addColorStop(.38, "#06071d");
+      g.addColorStop(1, "#010108");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+
+      const nebula1 = ctx.createRadialGradient(W * .24, H * .28, 0, W * .24, H * .28, W * .55);
+      nebula1.addColorStop(0, "rgba(255,70,190,.20)");
+      nebula1.addColorStop(.45, "rgba(120,90,255,.08)");
+      nebula1.addColorStop(1, "transparent");
+      ctx.fillStyle = nebula1;
+      ctx.fillRect(0, 0, W, H);
+
+      const nebula2 = ctx.createRadialGradient(W * .78, H * .58, 0, W * .78, H * .58, W * .48);
+      nebula2.addColorStop(0, "rgba(70,180,255,.16)");
+      nebula2.addColorStop(.5, "rgba(255,110,210,.08)");
+      nebula2.addColorStop(1, "transparent");
+      ctx.fillStyle = nebula2;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    function drawGalaxy() {
+      const all = [];
+
+      dust.forEach(d => {
+        const rp = rotatePoint(d);
+        const pp = project(rp);
+        all.push({ type: "dust", data: d, pp });
+      });
+
+      stars.forEach(s => {
+        s.tw += s.speed;
+        const rp = rotatePoint(s);
+        const pp = project(rp);
+        all.push({ type: "star", data: s, pp });
+      });
+
+      all.sort((a, b) => a.pp.z - b.pp.z);
+
+      all.forEach(item => {
+        const pp = item.pp;
+        if (pp.x < -150 || pp.x > W + 150 || pp.y < -150 || pp.y > H + 150) return;
+
+        if (item.type === "dust") {
+          const d = item.data;
+          const r = d.r * pp.s * .36;
+          const grd = ctx.createRadialGradient(pp.x, pp.y, 0, pp.x, pp.y, r);
+          grd.addColorStop(0, `rgba(${d.color[0]},${d.color[1]},${d.color[2]},${d.a})`);
+          grd.addColorStop(1, "transparent");
+          ctx.fillStyle = grd;
+          ctx.beginPath();
+          ctx.arc(pp.x, pp.y, r, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          const s = item.data;
+          const alpha = .45 + Math.sin(s.tw) * .28 + Math.min(0.25, pp.s * .08);
+          const size = Math.max(.45, s.r * pp.s * 1.85);
+          ctx.beginPath();
+          ctx.fillStyle = `rgba(${s.color[0]},${s.color[1]},${s.color[2]},${Math.max(.12, alpha)})`;
+          ctx.arc(pp.x, pp.y, size, 0, Math.PI * 2);
+          ctx.fill();
+
+          if (size > 1.15 && alpha > .58) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(${s.color[0]},${s.color[1]},${s.color[2]},${alpha * .18})`;
+            ctx.moveTo(pp.x - size * 4, pp.y);
+            ctx.lineTo(pp.x + size * 4, pp.y);
+            ctx.moveTo(pp.x, pp.y - size * 4);
+            ctx.lineTo(pp.x, pp.y + size * 4);
+            ctx.stroke();
+          }
+        }
+      });
+
+      drawGalaxyCore();
+      drawConstellations();
+    }
+
+    function drawGalaxyCore() {
+      const core = rotatePoint({x:0,y:0,z:0});
+      const p = project(core);
+      const r = 125 * p.s;
+      const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
+      g.addColorStop(0, "rgba(255,255,255,.92)");
+      g.addColorStop(.14, "rgba(255,228,180,.45)");
+      g.addColorStop(.35, "rgba(255,105,210,.20)");
+      g.addColorStop(1, "transparent");
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawConstellations() {
+      const points = [
+        [{x:-600,y:-120,z:-350},{x:-510,y:-220,z:-260},{x:-390,y:-180,z:-310},{x:-305,y:-260,z:-180}],
+        [{x:430,y:-210,z:220},{x:510,y:-120,z:140},{x:620,y:-170,z:260},{x:660,y:-40,z:120}],
+        [{x:-680,y:250,z:180},{x:-550,y:185,z:240},{x:-455,y:285,z:160},{x:-350,y:235,z:300}]
+      ];
+
+      ctx.save();
+      ctx.lineWidth = 1.2 * devicePixelRatio;
+      points.forEach(group => {
+        const pts = group.map(p => project(rotatePoint(p)));
+        ctx.beginPath();
+        pts.forEach((p, i) => {
+          if (i === 0) ctx.moveTo(p.x, p.y);
+          else ctx.lineTo(p.x, p.y);
+        });
+        ctx.strokeStyle = "rgba(255,255,255,.42)";
+        ctx.stroke();
+
+        pts.forEach(p => {
+          ctx.beginPath();
+          ctx.fillStyle = "rgba(255,255,255,.9)";
+          ctx.arc(p.x, p.y, 3.2 * devicePixelRatio, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      });
+      ctx.restore();
+    }
+
+    function draw() {
+      if (autoRotate) angleY += 0.0028;
+      zoom += (targetZoom - zoom) * 0.08;
+
+      drawBackground();
+      drawGalaxy();
+
+      if (zoom > 1.6) {
+        photoOrbit.classList.add("zoomed");
+        topText.classList.add("hide");
+        hint.classList.add("hide");
+      } else {
+        photoOrbit.classList.remove("zoomed");
+        topText.classList.remove("hide");
+        hint.classList.remove("hide");
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    function clientXY(e) {
+      if (e.touches && e.touches.length) {
+        return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }
+      return { x: e.clientX, y: e.clientY };
+    }
+
+    function pinchDistance(e) {
+      if (!e.touches || e.touches.length < 2) return 0;
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      return Math.hypot(dx, dy);
+    }
+
+    function start(e) {
+      autoRotate = false;
+
+      if (e.touches && e.touches.length === 2) {
+        lastPinch = pinchDistance(e);
+        return;
+      }
+
+      const now = Date.now();
+      if (now - lastTap < 280) {
+        showLove();
+        lastTap = 0;
+        return;
+      }
+      lastTap = now;
+
+      dragging = true;
+      const p = clientXY(e);
+      lastX = p.x;
+      lastY = p.y;
+    }
+
+    function move(e) {
+      e.preventDefault();
+
+      if (e.touches && e.touches.length === 2) {
+        const d = pinchDistance(e);
+        if (lastPinch) {
+          targetZoom += (d - lastPinch) * 0.004;
+          targetZoom = Math.max(.62, Math.min(2.65, targetZoom));
+        }
+        lastPinch = d;
+        return;
+      }
+
+      if (!dragging) return;
+      const p = clientXY(e);
+      const dx = p.x - lastX;
+      const dy = p.y - lastY;
+      lastX = p.x;
+      lastY = p.y;
+
+      angleY += dx * 0.008;
+      angleX += dy * 0.006;
+      angleX = Math.max(-1.25, Math.min(1.25, angleX));
+    }
+
+    function end() {
+      dragging = false;
+      lastPinch = 0;
+      setTimeout(() => autoRotate = true, 1500);
+    }
+
+    function wheel(e) {
+      e.preventDefault();
+      targetZoom += -e.deltaY * 0.001;
+      targetZoom = Math.max(.62, Math.min(2.65, targetZoom));
+    }
+
+    function showLove() {
+      msgIndex = (msgIndex + 1) % loveMessages.length;
+      loveText.textContent = loveMessages[msgIndex];
+      popup.classList.add("show");
+      createHearts(46);
+      targetZoom = Math.max(1.35, targetZoom);
+    }
+
+    function createHearts(n) {
+      const icons = ["❤️","💖","💕","💗","💘","✨"];
+      for (let i = 0; i < n; i++) {
+        const h = document.createElement("div");
+        h.className = "flying-heart";
+        h.textContent = icons[Math.floor(Math.random() * icons.length)];
+
+        const startX = window.innerWidth / 2 + (Math.random() - .5) * 80;
+        const startY = window.innerHeight / 2 + (Math.random() - .5) * 90;
+        const dx = (Math.random() - .5) * window.innerWidth * .9;
+        const dy = -80 - Math.random() * window.innerHeight * .55;
+
+        h.style.left = startX + "px";
+        h.style.top = startY + "px";
+        h.style.setProperty("--dx", dx + "px");
+        h.style.setProperty("--dy", dy + "px");
+        h.style.setProperty("--rot", (Math.random() * 220 - 110) + "deg");
+        h.style.animationDelay = (Math.random() * .28) + "s";
+        h.style.fontSize = (16 + Math.random() * 22) + "px";
+
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 3100);
+      }
+    }
+
+    closeBtn.addEventListener("click", () => {
+      popup.classList.remove("show");
+    });
+
+    canvas.addEventListener("mousedown", start);
+    canvas.addEventListener("mousemove", move);
+    window.addEventListener("mouseup", end);
+    canvas.addEventListener("touchstart", start, { passive: false });
+    canvas.addEventListener("touchmove", move, { passive: false });
+    canvas.addEventListener("touchend", end);
+    canvas.addEventListener("wheel", wheel, { passive: false });
+    window.addEventListener("resize", resize);
+
+    resize();
+    draw();
+    setTimeout(() => loader.classList.add("hide"), 650);
+  </script>
 </body>
 </html>
